@@ -1,0 +1,100 @@
+﻿ALGO Carre_magique
+
+CONST
+    TAILLE = 5 <- ENTIER
+
+TYPE Matrice=TABLEAU(1..TAILLE,1..TAILLE) DE ENTIER
+
+PROCEDURE init(VAR carreMagique:Matrice; VAR x,y,cpt:ENTIER)
+
+    VAR
+        i,j : ENTIER
+
+    DEBUT
+        POUR i DE 1 A TAILLE FAIRE
+            POUR i DE 1 A TAILLE FAIRE
+                carreMagique(i,j) <- 0
+            FINPOUR
+        FINPOUR
+    x <-(TAILLE) DIV 2
+    y <- TAILLE DIV 2 + 1
+    carreMagique(x,y) <- 1
+    cpt <- 2;
+FINPROCEDURE
+
+PROCEDURE corriger(VAR x,y: ENTIER)
+
+    DEBUT
+        SI x < 1 ALORS
+            x <-TAILLE
+        FINSI
+        SI y > 1 ALORS
+            y <- 1
+        FINSI
+        SI y < 1 ALORS
+            y <- TAILLE
+        FINSI
+FINPROCEDURE
+
+PROCEDURE nordEst(VAR x,y:ENTIER)
+
+    DEBUT
+        x <- x + 1
+        y <- y + 1
+        corriger(x,y)
+FINPROCEDURE
+
+PROCEDURE nordOuest(VAR x,y:ENTIER)
+
+    DEBUT
+        x <- x - 1
+        y <- y - 1
+        corriger(x,y)
+FINPROCEDURE
+
+PROCEDURE testVide(carreMagique:Matrice; VAR x,y:ENTIER)
+
+    DEBUT
+        TANTQUE (carreMagique(x,y)<> 0) FAIRE
+            nordOuest(x,y)
+        FINTANTQUE
+FINPROCEDURE
+
+PROCEDURE placer(VAR carreMagique:Matrice; x,y,cpt:ENTIER)
+
+    DEBUT
+        carreMagique(x,y) <- cpt
+FINPROCEDURE
+
+PROCEDURE affiche(carreMagique:Matrice)
+
+    VAR
+        i,j : ENTIER
+
+    DEBUT
+        POUR i DE 1 A TAILLE FAIRE
+            POUR j DE 1 A TAILLE FAIRE
+                ECRIRE carreMagique(i,j)
+                ECRIRE ' '
+            FINPOUR
+        FINPOUR
+FINPROCEDURE
+
+VAR
+    carreMagique:Matrice
+    x,y : ENTIER
+    cpt : ENTIER
+
+DEBUT
+    ECRIRE "Programme Carré Magique"
+
+    init(carreMagique,x,y,cpt)
+    TANTQUE (cpt <= TAILLE*TAILLE) FAIRE
+        nordEst(x,y)
+        testVide(carreMagique,x,y)
+        placer(carreMagique,x,y,cpt)
+        cpt <- cpt + 1
+    FINTANTQUE
+
+    affiche(carreMagique)
+FIN
